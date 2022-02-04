@@ -274,4 +274,33 @@ tabsContent.forEach((c) => {c.classList.remove('operations__content--active')});
   .classList.add('operations__content--active')
 })
 
+//lazy loding image
+const imgTargets = document.querySelectorAll
+('img[data-src]');
+
+const loadImg = function(entries, observe){
+const [entry] = entries;
+console.log(entry);
+
+if(!entry.isIntersecting){
+  return
+}else{
+  entry.target.src = entry.target.dataset.src;
+  entry.target.addEventListener('load', function(){
+    entry.target.classList.remove('lazy-img')
+  });
+  imgObserver.unobserve(entry.target);
+}
+};
+
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold:0,
+  rootMargin:'200px'
+})
+
+imgTargets.forEach( img => imgObserver.observe(img));
+
+
+
 
